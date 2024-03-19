@@ -1,6 +1,11 @@
 package com.moniapps.dictinonary
 
+import android.content.Context
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -20,9 +25,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -31,6 +40,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -38,13 +49,17 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.moniapps.dictinonary.domain.model.Meaning
 import com.moniapps.dictinonary.domain.model.WordItem
 import com.moniapps.dictinonary.presentation.MainState
@@ -81,7 +96,8 @@ class MainActivity : ComponentActivity() {
                                 )
                             },
                             trailingIcon = {
-                                Icon(imageVector = Icons.Rounded.Search,
+                                Icon(
+                                    imageVector = Icons.Rounded.Search,
                                     contentDescription = getString(R.string.search_a_word),
                                     tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier
@@ -89,8 +105,8 @@ class MainActivity : ComponentActivity() {
                                         .clickable {
                                             mainViewModel.onEvent(MainUIEvents.OnSearchClicked)
                                             keyboardController?.hide()
-
-                                        })
+                                        }
+                                )
 
                             },
                             label = {
@@ -136,121 +152,131 @@ class MainActivity : ComponentActivity() {
         mainState: MainState
     ) {
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = 30.dp)
-            ) {
-                mainState.wordItem?.let { wordItem ->
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Text(
-                        text = wordItem.word,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = wordItem.phonetic,
-                        fontSize = 17.sp,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .padding(top = 110.dp)
-                    .fillMaxSize()
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 50.dp,
-                            topEnd = 50.dp
-                        )
-                    )
-                    .background(
-                        MaterialTheme.colorScheme.secondaryContainer.copy(0.7f)
-                    )
-            ) {
-                if (mainState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(80.dp)
-                            .align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                } else {
-                    mainState.wordItem?.let { wordItem ->
-                        WordResult(wordItem)
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun WordResult(wordItem: WordItem) {
-        LazyColumn(contentPadding = PaddingValues(vertical = 32.dp)) {
-            items(wordItem.meanings.size) { index ->
-                Meaning(
-                    meaning = wordItem.meanings[index],
-                    index = index
-                )
-                Spacer(modifier = Modifier.size(32.dp))
-            }
-        }
-    }
-
-    @Composable
-    fun Meaning(
-        meaning: Meaning,
-        index: Int
-    ) {
-        Text(
-            text = "${index + 1}. ${meaning.partOfSpeech}",
-            fontSize = 17.sp,
-            color = MaterialTheme.colorScheme.onPrimary,
+        val context = LocalContext.current
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    top = 2.dp, bottom = 4.dp, start = 12.dp, end = 12.dp
-                )
-                .clip(RoundedCornerShape(20.dp))
-                .background(
-                    brush = Brush.horizontalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.primary.copy(0.7f),
-                            Color.Transparent
-                        ),
-                    )
+                .height(150.dp)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 30.dp)
+        ) {
+            mainState.wordItem?.let { wordItem ->
 
-                )
-                .padding(
-                    top = 2.dp, bottom = 4.dp, start = 24.dp, end = 12.dp
-                ),
-        )
-        Text(text = meaning.definition.definition, modifier = Modifier.padding(start = 24.dp, end = 12.dp))
-    }
+                Spacer(modifier = Modifier.height(20.dp))
 
-    @Composable
-    private fun BarColor() {
-        val systemUiController = rememberSystemUiController()
-        val color = MaterialTheme.colorScheme.background
-        LaunchedEffect(color) {
-            systemUiController.setSystemBarsColor(color)
+                Text(
+                    text = wordItem.word,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = wordItem.phonetic,
+                    fontSize = 17.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            mainState.wordItem?.phonetics.let {
+                it?.get(0)?.let { it1 -> Text(text = it1.audio) }
+            }
         }
-
+        Box(
+            modifier = Modifier
+                .padding(top = 160.dp)
+                .fillMaxSize()
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 50.dp,
+                        topEnd = 50.dp
+                    )
+                )
+                .background(
+                    MaterialTheme.colorScheme.secondaryContainer.copy(0.7f)
+                )
+        ) {
+            if (mainState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .align(Alignment.Center),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            } else {
+                mainState.wordItem?.let { wordItem ->
+                    WordResult(wordItem)
+                }
+            }
+        }
     }
+
+    @Preview(showSystemUi = true, showBackground = true)
+    @Composable
+    fun MainScreenPreview() {
+        MainScreen(mainState = MainState(isLoading = false, searchWord = "Meet"))
+    }
+
+}
+
+@Composable
+fun WordResult(wordItem: WordItem) {
+    LazyColumn(contentPadding = PaddingValues(vertical = 32.dp)) {
+        items(wordItem.meanings.size) { index ->
+            Meaning(
+                meaning = wordItem.meanings[index],
+                index = index
+            )
+            Spacer(modifier = Modifier.size(32.dp))
+        }
+    }
+}
+
+@Composable
+fun Meaning(
+    meaning: Meaning,
+    index: Int
+) {
+    Text(
+        text = "${index + 1}. ${meaning.partOfSpeech}",
+        fontSize = 17.sp,
+        color = MaterialTheme.colorScheme.onPrimary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                top = 2.dp, bottom = 4.dp, start = 12.dp, end = 12.dp
+            )
+            .clip(RoundedCornerShape(20.dp))
+            .background(
+                brush = Brush.horizontalGradient(
+                    listOf(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.primary.copy(0.7f),
+                        Color.Transparent
+                    ),
+                )
+
+            )
+            .padding(
+                top = 2.dp, bottom = 4.dp, start = 24.dp, end = 12.dp
+            ),
+    )
+    Text(
+        text = meaning.definition.definition,
+        modifier = Modifier.padding(start = 24.dp, end = 12.dp)
+    )
+}
+
+
+@Composable
+private fun BarColor() {
+    val systemUiController = rememberSystemUiController()
+    val color = MaterialTheme.colorScheme.background
+    LaunchedEffect(color) {
+        systemUiController.setSystemBarsColor(color)
+    }
+
 }
 
 

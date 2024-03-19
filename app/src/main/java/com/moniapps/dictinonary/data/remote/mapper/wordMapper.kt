@@ -2,9 +2,11 @@ package com.moniapps.dictinonary.data.remote.mapper
 
 import com.moniapps.dictinonary.data.remote.dto.DefinitionDto
 import com.moniapps.dictinonary.data.remote.dto.MeaningDto
+import com.moniapps.dictinonary.data.remote.dto.PhoneticDto
 import com.moniapps.dictinonary.data.remote.dto.WordItemDto
 import com.moniapps.dictinonary.domain.model.Definition
 import com.moniapps.dictinonary.domain.model.Meaning
+import com.moniapps.dictinonary.domain.model.Phonetic
 import com.moniapps.dictinonary.domain.model.WordItem
 
 fun WordItemDto.toWordItem() = WordItem(
@@ -12,7 +14,10 @@ fun WordItemDto.toWordItem() = WordItem(
     meanings = meanings?.map {
         it.toMeaning()
     } ?: emptyList(),
-    phonetic = phonetic ?: ""
+    phonetic = phonetic ?: "",
+    phonetics = phonetics?.map {
+        it.toPhonetic()
+    }?: emptyList()
 )
 
 
@@ -26,4 +31,8 @@ fun DefinitionDtotoDefinition(
 ) = Definition(
     definition = definitions?.definition ?: "",
     example = definitions?.example ?: "",
+)
+fun PhoneticDto.toPhonetic()=Phonetic(
+    audio = audio?:"",
+    text = text?:""
 )
