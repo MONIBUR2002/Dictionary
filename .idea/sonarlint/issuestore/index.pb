@@ -47,3 +47,5 @@ t
 Dapp/src/main/java/com/moniapps/dictinonary/presentation/MainState.kt,3\8\38c59e0d3b2e44668acffd614b792ee4398546b1
 w
 Gapp/src/main/java/com/moniapps/dictinonary/presentation/MainUIEvents.kt,3\8\38858fa9e9e8f6f95ed2a3db12c17d927bf506c6
+l
+<app/src/main/java/com/moniapps/dictinonary/ui/theme/Color.kt,4\b\4be319ea028d0166b0a8790f923078cc681002f9

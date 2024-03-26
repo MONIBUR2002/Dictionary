@@ -1,4 +1,14 @@
 
-Qkotlin:S1481›",Remove this unused "context" local variable.(˜®¾‚øÿÿÿÿ8´–®å1
-Gkotlin:S1874="#Deprecated code should not be used.(³‹Ñ†ûÿÿÿÿ8Â‡®å1
-Gkotlin:S1874>"#Deprecated code should not be used.(Ïì“èøÿÿÿÿ8á¥Œ®å1
+Zkotlin:S1133Ô"5Do not forget to remove this deprecated code someday.(ªş“Øúÿÿÿÿ8ı­×Ôç1
+Hkotlin:S1874Ø"#Deprecated code should not be used.(ûŞ´†ıÿÿÿÿ8‘®×Ôç1
+Ckotlin:S1874Ò"#Deprecated code should not be used.(Åå°î8‘®×Ôç1
+Hkotlin:S1874Ù"#Deprecated code should not be used.(„Çæâøÿÿÿÿ8‘®×Ôç1
+Gkotlin:S18749"#Deprecated code should not be used.(³‹Ñ†ûÿÿÿÿ8‘®×Ôç1
+Gkotlin:S1874:"#Deprecated code should not be used.(º¢‘İıÿÿÿÿ8‘®×Ôç1
+Gkotlin:S1874;"#Deprecated code should not be used.(¿¦ãõûÿÿÿÿ8‘®×Ôç1
+Ckotlin:S1874Ä"#Deprecated code should not be used.(äĞ¢š8‘®×Ôç1
+Ckotlin:S1874Ò"#Deprecated code should not be used.(Åå°î8’®×Ôç1
+Hkotlin:S1874Ù"#Deprecated code should not be used.(„Çæâøÿÿÿÿ8’®×Ôç1
+Hkotlin:S1874"#Deprecated code should not be used.(ØåÔÛşÿÿÿÿ8’®×Ôç1
+Hkotlin:S1874"#Deprecated code should not be used.(úôãüÿÿÿÿ8’®×Ôç1
+wkotlin:S3776˜"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ìøıäüÿÿÿÿ8“®×Ôç1
