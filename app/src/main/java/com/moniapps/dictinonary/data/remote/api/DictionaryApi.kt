@@ -4,7 +4,8 @@ import com.moniapps.dictinonary.data.remote.dto.WordResultDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface DictionaryApi {
+
+fun interface DictionaryApi {
     @GET("{word}")
     suspend fun getWordResult(
         @Path("word") word : String

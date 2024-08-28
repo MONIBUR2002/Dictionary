@@ -49,3 +49,5 @@ w
 Gapp/src/main/java/com/moniapps/dictinonary/presentation/MainUIEvents.kt,3\8\38858fa9e9e8f6f95ed2a3db12c17d927bf506c6
 l
 <app/src/main/java/com/moniapps/dictinonary/ui/theme/Color.kt,4\b\4be319ea028d0166b0a8790f923078cc681002f9
+s
+Capp/src/main/java/com/moniapps/dictinonary/data/local/model/Word.kt,d\9\d9f8188073b32ab6fd4d02dea5234e017a47960b

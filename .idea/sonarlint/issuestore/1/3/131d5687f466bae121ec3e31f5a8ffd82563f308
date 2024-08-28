@@ -1,14 +1,15 @@
 
-Zkotlin:S1133Ô"5Do not forget to remove this deprecated code someday.(ªş“Øúÿÿÿÿ8ı­×Ôç1
-Hkotlin:S1874Ø"#Deprecated code should not be used.(ûŞ´†ıÿÿÿÿ8‘®×Ôç1
-Ckotlin:S1874Ò"#Deprecated code should not be used.(Åå°î8‘®×Ôç1
-Hkotlin:S1874Ù"#Deprecated code should not be used.(„Çæâøÿÿÿÿ8‘®×Ôç1
-Gkotlin:S18749"#Deprecated code should not be used.(³‹Ñ†ûÿÿÿÿ8‘®×Ôç1
-Gkotlin:S1874:"#Deprecated code should not be used.(º¢‘İıÿÿÿÿ8‘®×Ôç1
-Gkotlin:S1874;"#Deprecated code should not be used.(¿¦ãõûÿÿÿÿ8‘®×Ôç1
-Ckotlin:S1874Ä"#Deprecated code should not be used.(äĞ¢š8‘®×Ôç1
-Ckotlin:S1874Ò"#Deprecated code should not be used.(Åå°î8’®×Ôç1
-Hkotlin:S1874Ù"#Deprecated code should not be used.(„Çæâøÿÿÿÿ8’®×Ôç1
-Hkotlin:S1874"#Deprecated code should not be used.(ØåÔÛşÿÿÿÿ8’®×Ôç1
-Hkotlin:S1874"#Deprecated code should not be used.(úôãüÿÿÿÿ8’®×Ôç1
-wkotlin:S3776˜"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ìøıäüÿÿÿÿ8“®×Ôç1
+Zkotlin:S1133ğ"5Do not forget to remove this deprecated code someday.(ªş“Øúÿÿÿÿ8ÈÉÕåç1
+Hkotlin:S1874ô"#Deprecated code should not be used.(ûŞ´†ıÿÿÿÿ8ÓÉÕåç1
+Ckotlin:S1874î"#Deprecated code should not be used.(Åå°î8ÓÉÕåç1
+Hkotlin:S1874õ"#Deprecated code should not be used.(„Çæâøÿÿÿÿ8ÓÉÕåç1
+Gkotlin:S1874<"#Deprecated code should not be used.(³‹Ñ†ûÿÿÿÿ8ÓÉÕåç1
+Gkotlin:S1874="#Deprecated code should not be used.(º¢‘İıÿÿÿÿ8ÓÉÕåç1
+Gkotlin:S1874>"#Deprecated code should not be used.(¿¦ãõûÿÿÿÿ8ÓÉÕåç1
+Ckotlin:S1874Ü"#Deprecated code should not be used.(äĞ¢š8ÓÉÕåç1
+Ckotlin:S1874î"#Deprecated code should not be used.(Åå°î8ÓÉÕåç1
+Hkotlin:S1874õ"#Deprecated code should not be used.(„Çæâøÿÿÿÿ8ÓÉÕåç1
+Hkotlin:S1874¹"#Deprecated code should not be used.(ØåÔÛşÿÿÿÿ8ÓÉÕåç1
+Hkotlin:S1874º"#Deprecated code should not be used.(úôãüÿÿÿÿ8ÓÉÕåç1
+vkotlin:S3776N"RRefactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.(¶Á»¬şÿÿÿÿ8ÔÉÕåç1
+wkotlin:S3776³"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(ìøıäüÿÿÿÿ8ÔÉÕåç1

@@ -18,8 +18,8 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     private val _mainState = MutableStateFlow(MainState())
     val mainState = _mainState.asStateFlow()
-    private val searchJob: Job? = null
-    fun onEvent(mainUiEvent: MainUIEvents) {
+
+        fun onEvent(mainUiEvent: MainUIEvents) {
         when (mainUiEvent) {
             MainUIEvents.OnSearchClicked -> {
                 loadWordResults()

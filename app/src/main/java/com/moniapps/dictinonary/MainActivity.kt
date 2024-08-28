@@ -1,6 +1,9 @@
 package com.moniapps.dictinonary
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -64,6 +67,9 @@ import com.moniapps.dictinonary.presentation.MainUIEvents
 import com.moniapps.dictinonary.presentation.MainViewModel
 import com.moniapps.dictinonary.ui.theme.DictinonaryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 
 @AndroidEntryPoint
@@ -73,7 +79,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val keyboardController = LocalSoftwareKeyboardController.current
-
+            var isError by remember {
+                mutableStateOf(false)
+            }
             DictinonaryTheme {
                 BarColor()
                 val mainViewModel = hiltViewModel<MainViewModel>()
@@ -95,24 +103,41 @@ class MainActivity : ComponentActivity() {
                                     MainUIEvents.OnSearchWordChange(it)
 
                                 )
+                                isError = false
                             },
                             trailingIcon = {
                                 Icon(
                                     imageVector = Icons.Rounded.Search,
                                     contentDescription = getString(R.string.search_a_word),
-                                    tint = MaterialTheme.colorScheme.primary,
+                                    tint = if (mainState.searchWord.isNotEmpty())
+                                        MaterialTheme.colorScheme.primary
+                                    else Color.Gray,
                                     modifier = Modifier
                                         .size(30.dp)
                                         .clickable {
-                                            mainViewModel.onEvent(MainUIEvents.OnSearchClicked)
-                                            keyboardController?.hide()
-                                            buttonVisible = true
+                                            if (mainState.searchWord.isNotEmpty()) {
+                                                mainViewModel.onEvent(MainUIEvents.OnSearchClicked)
+                                                keyboardController?.hide()
+                                                buttonVisible = true
+                                            } else {
+                                                isError = true
+                                                Toast
+                                                    .makeText(
+                                                        this,
+                                                        "Enter a word to search",
+                                                        Toast.LENGTH_SHORT
+                                                    )
+                                                    .show()
+                                            }
                                         }
+
+
                                 )
-                            },
+                            }, isError = isError,
                             label = {
                                 Text(
-                                    text = getString(R.string.search_a_word),
+                                    text = if(!isError) getString(R.string.search_a_word)
+                                    else "Please enter a word!",
                                     fontSize = 15.sp,
                                     modifier = Modifier.alpha(0.7f)
                                 )
@@ -124,13 +149,15 @@ class MainActivity : ComponentActivity() {
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                             keyboardActions = KeyboardActions(
                                 onSearch = {
-                                    mainViewModel.onEvent(MainUIEvents.OnSearchClicked)
-                                    keyboardController?.hide()
-                                    buttonVisible = true
+                                    if (mainState.searchWord.isNotEmpty()) {
+                                        mainViewModel.onEvent(MainUIEvents.OnSearchClicked)
+                                        keyboardController?.hide()
+                                        buttonVisible = true
+                                    }
 
 
                                 }
-                            )
+                            ),
                         )
                     },
                     content = { paddingValues ->
@@ -139,7 +166,7 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(top = paddingValues.calculateTopPadding())
                         ) {
-                            MainScreen(mainState = mainState,buttonVisible= buttonVisible)
+                            MainScreen(mainState = mainState, buttonVisible = buttonVisible)
                         }
 
                     }
@@ -154,9 +181,6 @@ class MainActivity : ComponentActivity() {
         buttonVisible: Boolean
     ) {
         val context = LocalContext.current
-        var isPlaying by remember {
-            mutableStateOf(false)
-        }
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -194,7 +218,9 @@ class MainActivity : ComponentActivity() {
                 mainState.wordItem?.phonetics.let {
                     val url = it?.get(0)?.audio
                     val exoPlayer = remember { ExoPlayer.Builder(context).build() }
-
+                    var isPlaying by remember {
+                        mutableStateOf(false)
+                    }
                     if (url != null) {
                         ExoPlayerView(url = url, exoPlayer = exoPlayer, isPlaying = isPlaying)
                     }
@@ -202,19 +228,21 @@ class MainActivity : ComponentActivity() {
                         onClick = {
                             exoPlayer.play()
                             isPlaying = true
+
+
                         }
                     ) {
 
                         if (buttonVisible) {
 
-                            exoPlayer.addListener(object : Player.Listener{
+                            exoPlayer.addListener(object : Player.Listener {
                                 @Deprecated("Deprecated in Java")
                                 override fun onPlayerStateChanged(
                                     playWhenReady: Boolean,
                                     playbackState: Int
                                 ) {
                                     super.onPlayerStateChanged(playWhenReady, playbackState)
-                                    if(playbackState == Player.STATE_ENDED){
+                                    if (playbackState == Player.STATE_ENDED) {
                                         isPlaying = false
                                     }
                                 }
@@ -282,13 +310,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ExoPlayerView(url: String, exoPlayer: ExoPlayer,isPlaying: Boolean) {
+fun ExoPlayerView(url: String, exoPlayer: ExoPlayer, isPlaying: Boolean) {
     val mediaSource = remember(url) { MediaItem.fromUri(url) }
     if (isPlaying)
-    LaunchedEffect(isPlaying) {
-        exoPlayer.setMediaItem(mediaSource)
-        exoPlayer.prepare()
-    }
+        LaunchedEffect(isPlaying) {
+            exoPlayer.setMediaItem(mediaSource)
+            exoPlayer.prepare()
+        }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -345,6 +373,7 @@ fun Meaning(
         modifier = Modifier.padding(start = 24.dp, end = 12.dp)
     )
 }
+
 @Composable
 private fun BarColor() {
     val systemUiController = rememberSystemUiController()
