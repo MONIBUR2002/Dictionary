@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Dictinonary</string>
+    <string name="can_t_get_word_result">Can\'t get word result</string>
+    <string name="search_a_word">Search a word</string>
+</resources>
